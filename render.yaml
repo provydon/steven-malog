@@ -1,0 +1,12 @@
+# Steven Malog, Inc. — company website
+# Static site served from the repo root (single index.html).
+services:
+  - type: web
+    name: steven-malog
+    runtime: static
+    buildCommand: ""
+    staticPublishPath: .
+    pullRequestPreviewsEnabled: false
+    domains:
+      - stevenmalog.com
+      - www.stevenmalog.com
