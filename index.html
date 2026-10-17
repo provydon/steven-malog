@@ -1,0 +1,571 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Steven Malog, Inc.</title>
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;1,9..144,400&family=Public+Sans:wght@400;500;600;700&family=Space+Mono:wght@400;700&display=swap">
+
+<style>
+  /* Layout concept: bound-volume front matter — a fixed colophon spine beside a
+     scrolling dedication leaf and a numbered product register (not a linear hero stack). */
+  :root{
+    --paper:#e6e2d8;      /* warm stone */
+    --panel:#efece4;      /* raised leaf */
+    --ink:#1c1a15;        /* warm near-black */
+    --muted:#6c655a;      /* greige */
+    --faint:#8a8276;      /* tertiary */
+    --line:rgba(28,26,21,.16);
+    --hair:rgba(28,26,21,.09);
+    --accent:#7c2130;     /* oxblood */
+    --brass:#8f7030;      /* brass */
+    color-scheme:light;
+
+    --serif:"Fraunces", Georgia, "Times New Roman", serif;
+    --sans:"Public Sans", system-ui, -apple-system, Segoe UI, Roboto, sans-serif;
+    --mono:"Space Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+  }
+  @media (prefers-color-scheme:dark){
+    :root:not([data-theme="light"]){
+      --paper:#15130d;
+      --panel:#1d1a12;
+      --ink:#ece6d7;
+      --muted:#9a9184;
+      --faint:#7f776a;
+      --line:rgba(236,230,215,.16);
+      --hair:rgba(236,230,215,.09);
+      --accent:#d8687a;
+      --brass:#c9a150;
+      color-scheme:dark;
+    }
+  }
+  :root[data-theme="dark"]{
+    --paper:#15130d;
+    --panel:#1d1a12;
+    --ink:#ece6d7;
+    --muted:#9a9184;
+    --faint:#7f776a;
+    --line:rgba(236,230,215,.16);
+    --hair:rgba(236,230,215,.09);
+    --accent:#d8687a;
+    --brass:#c9a150;
+    color-scheme:dark;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink);
+    font-family:var(--sans);
+    font-size:16px;
+    line-height:1.6;
+    -webkit-font-smoothing:antialiased;
+    text-rendering:optimizeLegibility;
+  }
+  ::selection{background:var(--accent);color:var(--paper)}
+  a{color:inherit}
+  h1,h2,h3{text-wrap:balance;margin:0}
+
+  .page{
+    display:grid;
+    grid-template-columns:minmax(220px,250px) minmax(0,1fr);
+    min-height:100%;
+  }
+
+  /* ---- Colophon spine ---- */
+  .spine{
+    border-right:1px solid var(--line);
+    background:var(--panel);
+  }
+  .spine-inner{
+    position:sticky;
+    top:0;
+    min-height:100vh;
+    display:flex;
+    flex-direction:column;
+    gap:34px;
+    padding:36px max(24px,env(safe-area-inset-left,0px)) 32px 36px;
+  }
+  .monogram{
+    width:52px;height:52px;
+    display:grid;place-items:center;
+    border:1.5px solid var(--brass);
+    color:var(--brass);
+    font-family:var(--serif);
+    font-weight:600;
+    letter-spacing:.06em;
+    font-size:19px;
+  }
+  .spine-name{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.18em;
+    text-transform:uppercase;
+    color:var(--ink);
+    line-height:1.7;
+  }
+  .spine-name span{display:block;color:var(--faint)}
+  nav.snav{display:flex;flex-direction:column;gap:2px;margin-top:4px}
+  nav.snav a{
+    display:flex;align-items:baseline;gap:12px;
+    text-decoration:none;
+    padding:7px 0;
+    color:var(--muted);
+    font-size:13.5px;
+    transition:color .25s ease;
+  }
+  nav.snav a .fig{
+    font-family:var(--mono);
+    font-size:10.5px;
+    color:var(--faint);
+    letter-spacing:.05em;
+    transition:color .25s ease;
+  }
+  nav.snav a:hover,nav.snav a.active{color:var(--ink)}
+  nav.snav a:hover .fig,nav.snav a.active .fig{color:var(--accent)}
+  .spine-foot{
+    margin-top:auto;
+    font-family:var(--mono);
+    font-size:10.5px;
+    letter-spacing:.08em;
+    color:var(--faint);
+    line-height:2;
+  }
+  .spine-foot b{color:var(--muted);font-weight:400}
+
+  /* ---- Main ---- */
+  main{min-width:0}
+  .wrap{
+    padding-left:max(22px,env(safe-area-inset-left,0px));
+    padding-right:max(22px,env(safe-area-inset-right,0px));
+    max-width:940px;
+  }
+  section{border-bottom:1px solid var(--hair)}
+  .sec-pad{padding-block:clamp(52px,7vw,90px)}
+
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.24em;
+    text-transform:uppercase;
+    color:var(--accent);
+    margin:0 0 20px;
+    display:flex;align-items:center;gap:14px;
+  }
+  .eyebrow::before{
+    content:"";width:26px;height:1px;background:var(--accent);display:inline-block;
+  }
+  .sec-label{
+    font-family:var(--mono);
+    font-size:11px;
+    letter-spacing:.2em;
+    text-transform:uppercase;
+    color:var(--faint);
+  }
+
+  /* ---- Dedication ---- */
+  .ded .lede{
+    font-family:var(--serif);
+    font-size:clamp(14px,2.2vw,17px);
+    color:var(--muted);
+    letter-spacing:.02em;
+    font-style:italic;
+  }
+  .ded h1{
+    font-family:var(--serif);
+    font-weight:500;
+    font-size:clamp(40px,8.5vw,86px);
+    line-height:1.02;
+    letter-spacing:-.01em;
+    margin:14px 0 0;
+  }
+  .ded .dates{
+    display:flex;align-items:center;gap:16px;
+    margin:26px 0 0;
+    font-family:var(--mono);
+    font-size:12.5px;
+    letter-spacing:.14em;
+    text-transform:uppercase;
+    color:var(--muted);
+  }
+  .ded .dates::before,.ded .dates::after{
+    content:"";height:1px;background:var(--line);flex:1;max-width:60px;
+  }
+  .ded .dates::after{max-width:none}
+  .ded .note{
+    margin:40px 0 0;
+    max-width:60ch;
+    font-size:clamp(16px,1.6vw,18.5px);
+    line-height:1.72;
+    color:var(--ink);
+  }
+  .ded .note .sig{
+    display:block;margin-top:22px;
+    font-family:var(--mono);font-size:12px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint);
+  }
+
+  /* ---- Register ---- */
+  .sec-head{
+    display:flex;align-items:baseline;justify-content:space-between;
+    gap:16px;flex-wrap:wrap;
+    margin-bottom:34px;
+  }
+  .sec-head h2{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(26px,4vw,40px);
+    letter-spacing:-.01em;line-height:1.08;
+  }
+  .register{display:flex;flex-direction:column}
+  .reg-row{
+    display:grid;
+    grid-template-columns:44px 1.1fr 1.5fr auto;
+    gap:22px;align-items:baseline;
+    padding:22px 2px;
+    border-top:1px solid var(--line);
+    position:relative;
+    transition:padding-left .3s ease;
+  }
+  .reg-row:last-child{border-bottom:1px solid var(--line)}
+  .reg-row::after{
+    content:"";position:absolute;left:0;top:-1px;height:1px;width:0;
+    background:var(--accent);transition:width .4s ease;
+  }
+  .reg-row:hover::after{width:44px}
+  .reg-row:hover{padding-left:10px}
+  .reg-no{font-family:var(--mono);font-size:12px;color:var(--brass);letter-spacing:.05em}
+  .reg-name{
+    font-family:var(--serif);font-weight:500;font-size:22px;line-height:1.15;
+  }
+  .reg-name .dom{
+    display:block;margin-top:6px;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.04em;
+    color:var(--muted);text-decoration:none;
+  }
+  .reg-name .dom:hover{color:var(--accent)}
+  .reg-desc{color:var(--muted);font-size:14.5px;line-height:1.55;min-width:0}
+  .reg-visit{
+    justify-self:end;white-space:nowrap;
+    font-family:var(--mono);font-size:11.5px;letter-spacing:.12em;
+    text-transform:uppercase;text-decoration:none;color:var(--ink);
+    border-bottom:1px solid var(--line);padding-bottom:3px;
+    transition:color .2s ease,border-color .2s ease;
+  }
+  .reg-visit:hover{color:var(--accent);border-color:var(--accent)}
+  .reg-visit .arr{color:var(--accent);margin-left:6px}
+
+  /* ---- Company ---- */
+  .co-grid{
+    display:grid;grid-template-columns:1.25fr 1fr;gap:clamp(30px,5vw,64px);
+    align-items:start;
+  }
+  .co-body p{margin:0 0 18px;font-size:clamp(16px,1.5vw,17.5px);line-height:1.72;max-width:52ch}
+  .co-body p:last-child{margin-bottom:0}
+  .co-body .drop::first-letter{
+    font-family:var(--serif);font-size:3.4em;line-height:.76;float:left;
+    padding:6px 10px 0 0;color:var(--accent);font-weight:500;
+  }
+  .ledger{border-top:1px solid var(--line)}
+  .ledger dl{margin:0;display:grid;grid-template-columns:1fr;gap:0}
+  .ledger .item{padding:16px 0;border-bottom:1px solid var(--hair)}
+  .ledger dt{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.16em;
+    text-transform:uppercase;color:var(--faint);margin-bottom:7px;
+  }
+  .ledger dd{margin:0;font-size:14px;line-height:1.55;color:var(--ink)}
+  .ledger dd a{color:var(--accent);text-decoration:none;word-break:break-word}
+  .ledger dd a:hover{text-decoration:underline}
+
+  /* ---- Contact ---- */
+  .contact{display:flex;flex-direction:column;gap:28px}
+  .contact h2{
+    font-family:var(--serif);font-weight:500;
+    font-size:clamp(28px,5vw,52px);letter-spacing:-.01em;line-height:1.05;max-width:16ch;
+  }
+  .mail{
+    display:inline-flex;align-items:center;gap:14px;flex-wrap:wrap;
+    border:1px solid var(--line);background:var(--panel);
+    padding:14px 16px;border-radius:2px;align-self:flex-start;max-width:100%;
+  }
+  .mail code{
+    font-family:var(--mono);font-size:clamp(14px,2.6vw,18px);
+    color:var(--ink);letter-spacing:.01em;word-break:break-all;
+  }
+  .copy{
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.12em;text-transform:uppercase;
+    background:var(--accent);color:var(--paper);border:none;cursor:pointer;
+    padding:8px 12px;border-radius:2px;transition:opacity .2s ease;white-space:nowrap;
+  }
+  .copy:hover{opacity:.88}
+  .copy.done{background:var(--brass)}
+  .contact .meta{font-size:13.5px;color:var(--muted);line-height:1.7;max-width:56ch}
+  .contact .meta a{color:var(--accent);text-decoration:none}
+  .contact .meta a:hover{text-decoration:underline}
+
+  .colophon{
+    padding-block:30px;
+    display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap;
+    font-family:var(--mono);font-size:10.5px;letter-spacing:.1em;
+    text-transform:uppercase;color:var(--faint);
+  }
+
+  a:focus-visible,button:focus-visible,.reg-visit:focus-visible{
+    outline:2px solid var(--accent);outline-offset:3px;border-radius:1px;
+  }
+
+  /* ---- Mobile ---- */
+  @media (max-width:840px){
+    .page{grid-template-columns:1fr}
+    .spine{border-right:none;border-bottom:1px solid var(--line)}
+    .spine-inner{
+      position:static;min-height:0;
+      flex-direction:row;align-items:center;flex-wrap:wrap;gap:18px;
+      padding:20px max(22px,env(safe-area-inset-left,0px)) 20px max(22px,env(safe-area-inset-right,0px));
+    }
+    .monogram{width:44px;height:44px;font-size:16px}
+    nav.snav{flex-direction:row;flex-wrap:wrap;gap:4px 18px;margin:0;width:100%}
+    nav.snav a{padding:2px 0}
+    .spine-foot{margin:0;width:100%;border-top:1px solid var(--hair);padding-top:14px;line-height:1.9}
+    .co-grid{grid-template-columns:1fr}
+    .reg-row{grid-template-columns:34px 1fr;grid-template-areas:"no name" ". desc" ". visit";gap:6px 16px}
+    .reg-no{grid-area:no}
+    .reg-name{grid-area:name;font-size:20px}
+    .reg-desc{grid-area:desc;margin-top:4px}
+    .reg-visit{grid-area:visit;justify-self:start;margin-top:12px}
+    .reg-row:hover{padding-left:2px}
+  }
+
+  @media (prefers-reduced-motion:reduce){
+    *{transition:none!important;animation:none!important}
+  }
+  @media (prefers-reduced-motion:no-preference){
+    .reveal{opacity:0;transform:translateY(14px);animation:rise .7s cubic-bezier(.2,.7,.2,1) forwards}
+    .ded .lede{animation-delay:.05s}
+    .ded h1{animation-delay:.14s}
+    .ded .dates{animation-delay:.26s}
+    .ded .note{animation-delay:.36s}
+    @keyframes rise{to{opacity:1;transform:none}}
+  }
+</style>
+</head>
+<body>
+
+<div class="page">
+  <aside class="spine">
+    <div class="spine-inner">
+      <div class="monogram" aria-hidden="true">SM</div>
+      <div class="spine-name">Steven Malog<span>Incorporated</span></div>
+      <nav class="snav" aria-label="Sections">
+        <a href="#dedication"><span class="fig">01</span>Dedication</a>
+        <a href="#products"><span class="fig">02</span>Products</a>
+        <a href="#company"><span class="fig">03</span>Company</a>
+        <a href="#contact"><span class="fig">04</span>Contact</a>
+      </nav>
+      <div class="spine-foot">
+        <b>Delaware · Port Harcourt</b><br>
+        In memoriam — 2014<br>
+        <span id="yr">©</span>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <!-- 01 — Dedication -->
+    <section id="dedication" class="ded">
+      <div class="wrap sec-pad">
+        <p class="eyebrow reveal">In loving memory</p>
+        <p class="lede reveal">This company carries my father's name.</p>
+        <h1 class="reveal">Steven Maloge<br>Ifeosame</h1>
+        <p class="dates reveal">13 December 2014</p>
+        <p class="note reveal">
+          My father died on 13 December 2014, when I was sixteen. Steven Malog, Inc.
+          is built in his honour — his name on the door of every product we ship, and
+          a quiet promise kept one release at a time. What follows is the register of
+          that work: six products, built and run under his name.
+          <span class="sig">— The founder</span>
+        </p>
+      </div>
+    </section>
+
+    <!-- 02 — Products -->
+    <section id="products">
+      <div class="wrap sec-pad">
+        <div class="sec-head">
+          <h2>The register of products</h2>
+          <span class="sec-label">Six, in service</span>
+        </div>
+        <div class="register">
+
+          <div class="reg-row">
+            <div class="reg-no">01</div>
+            <div class="reg-name">Fikets
+              <a class="dom" href="https://fikets.com" target="_blank" rel="noopener">fikets.com ↗</a>
+            </div>
+            <div class="reg-desc">Events, ticketing and door check-in — from the first ticket sold to the scan at the gate.</div>
+            <a class="reg-visit" href="https://fikets.com" target="_blank" rel="noopener">Visit<span class="arr">↗</span></a>
+          </div>
+
+          <div class="reg-row">
+            <div class="reg-no">02</div>
+            <div class="reg-name">DBMigratePro
+              <a class="dom" href="https://dbmigratepro.com" target="_blank" rel="noopener">dbmigratepro.com ↗</a>
+            </div>
+            <div class="reg-desc">Encrypted database backups, disaster recovery and migration — restore to any database, on any cloud, in minutes.</div>
+            <a class="reg-visit" href="https://dbmigratepro.com" target="_blank" rel="noopener">Visit<span class="arr">↗</span></a>
+          </div>
+
+          <div class="reg-row">
+            <div class="reg-no">03</div>
+            <div class="reg-name">Niobe
+              <a class="dom" href="https://niobe.live" target="_blank" rel="noopener">niobe.live ↗</a>
+            </div>
+            <div class="reg-desc">AI opportunity intelligence — the people talking about you, and the people looking for what you do.</div>
+            <a class="reg-visit" href="https://niobe.live" target="_blank" rel="noopener">Visit<span class="arr">↗</span></a>
+          </div>
+
+          <div class="reg-row">
+            <div class="reg-no">04</div>
+            <div class="reg-name">Datavase
+              <a class="dom" href="https://datavase.live" target="_blank" rel="noopener">datavase.live ↗</a>
+            </div>
+            <div class="reg-desc">AI-native software for physical businesses — run the whole operation by talking to it.</div>
+            <a class="reg-visit" href="https://datavase.live" target="_blank" rel="noopener">Visit<span class="arr">↗</span></a>
+          </div>
+
+          <div class="reg-row">
+            <div class="reg-no">05</div>
+            <div class="reg-name">AfriMRR
+              <a class="dom" href="https://africanmrr.com" target="_blank" rel="noopener">africanmrr.com ↗</a>
+            </div>
+            <div class="reg-desc">The verified-revenue leaderboard and marketplace for African startups — MRR confirmed through payment-provider APIs.</div>
+            <a class="reg-visit" href="https://africanmrr.com" target="_blank" rel="noopener">Visit<span class="arr">↗</span></a>
+          </div>
+
+          <div class="reg-row">
+            <div class="reg-no">06</div>
+            <div class="reg-name">Surbetslips
+              <a class="dom" href="https://surbetslips.com" target="_blank" rel="noopener">surbetslips.com ↗</a>
+            </div>
+            <div class="reg-desc">Surebet slips and tooling for sports-betting arbitrage — spotting the margin across the board.</div>
+            <a class="reg-visit" href="https://surbetslips.com" target="_blank" rel="noopener">Visit<span class="arr">↗</span></a>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- 03 — Company -->
+    <section id="company">
+      <div class="wrap sec-pad">
+        <p class="eyebrow">The company</p>
+        <div class="co-grid">
+          <div class="co-body">
+            <p class="drop">Steven Malog, Inc. is a technology company that builds and operates a small family of software products. We work quietly and ship real things — tools for events, data, discovery and the everyday running of a business.</p>
+            <p>Incorporated in Delaware as a C Corporation, with its working home in Port Harcourt, Nigeria. One studio, several products, and a name we intend to keep honest.</p>
+          </div>
+          <div class="ledger">
+            <dl>
+              <div class="item">
+                <dt>Entity</dt>
+                <dd>Steven Malog, Inc. — Delaware C Corporation</dd>
+              </div>
+              <div class="item">
+                <dt>Registered office</dt>
+                <dd>131 Continental Drive, Suite 305, Newark, DE 19713, United States</dd>
+              </div>
+              <div class="item">
+                <dt>Operations</dt>
+                <dd>Flat 5, God's Will Estate, Choba, Port Harcourt 500102, Rivers, Nigeria</dd>
+              </div>
+              <div class="item">
+                <dt>On the web</dt>
+                <dd><a href="https://www.linkedin.com/company/steven-malog" target="_blank" rel="noopener">linkedin.com/company/steven-malog ↗</a></dd>
+              </div>
+            </dl>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- 04 — Contact -->
+    <section id="contact">
+      <div class="wrap sec-pad contact">
+        <p class="eyebrow">Get in touch</p>
+        <h2>Say hello, and we'll write back.</h2>
+        <div class="mail">
+          <code id="mail">hello@stevenmalog.com</code>
+          <button class="copy" id="copy" type="button" aria-label="Copy email address">Copy</button>
+        </div>
+        <p class="meta">
+          For partnerships, support on any of our products, or anything at all,
+          email <a href="mailto:hello@stevenmalog.com">hello@stevenmalog.com</a>.
+          The address above is selectable — copy it if the link doesn't open your mail app.
+        </p>
+      </div>
+    </section>
+
+    <div class="wrap colophon">
+      <span id="foot-copy">© Steven Malog, Inc.</span>
+      <span>Built in his honour</span>
+    </div>
+  </main>
+</div>
+
+<script>
+  (function(){
+    var year = new Date().getFullYear();
+    var yr = document.getElementById('yr');
+    if(yr) yr.textContent = '© ' + year;
+    var fc = document.getElementById('foot-copy');
+    if(fc) fc.textContent = '© ' + year + ' Steven Malog, Inc.';
+
+    // Copy email
+    var btn = document.getElementById('copy');
+    if(btn){
+      btn.addEventListener('click', function(){
+        var text = 'hello@stevenmalog.com';
+        var mark = function(){
+          btn.textContent = 'Copied';
+          btn.classList.add('done');
+          setTimeout(function(){ btn.textContent = 'Copy'; btn.classList.remove('done'); }, 1800);
+        };
+        if(navigator.clipboard && navigator.clipboard.writeText){
+          navigator.clipboard.writeText(text).then(mark).catch(selectFallback);
+        } else { selectFallback(); }
+        function selectFallback(){
+          try{
+            var r = document.createRange();
+            r.selectNodeContents(document.getElementById('mail'));
+            var s = window.getSelection(); s.removeAllRanges(); s.addRange(r);
+            mark();
+          }catch(e){}
+        }
+      });
+    }
+
+    // Active nav via scroll position
+    var links = Array.prototype.slice.call(document.querySelectorAll('nav.snav a'));
+    var map = {};
+    links.forEach(function(a){ map[a.getAttribute('href').slice(1)] = a; });
+    var secs = ['dedication','products','company','contact']
+      .map(function(id){ return document.getElementById(id); })
+      .filter(Boolean);
+    if('IntersectionObserver' in window){
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){
+            links.forEach(function(a){ a.classList.remove('active'); });
+            var a = map[e.target.id]; if(a) a.classList.add('active');
+          }
+        });
+      }, {rootMargin:'-45% 0px -50% 0px', threshold:0});
+      secs.forEach(function(s){ io.observe(s); });
+    }
+  })();
+</script>
+</body>
+</html>
